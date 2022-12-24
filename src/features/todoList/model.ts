@@ -1,5 +1,6 @@
 import {createApi, createEffect, createStore} from 'effector'
 import {api, TaskType} from './api'
+import {createTaskFx} from '../addTaskForm/model'
 
 export const $todoList = createStore<TaskType[]>([])
 export const {addTask, removeTask} = createApi($todoList, {
@@ -12,6 +13,8 @@ export const fetchTodoListFx = createEffect(
 )
 
 $todoList.on(fetchTodoListFx.doneData, (_, data) => [...data.items])
+
+$todoList.on(createTaskFx.doneData, (tasks, data) => [data.item, ...tasks]) //todo: maybe should fetchTodoListFx (all tasks)
 
 fetchTodoListFx.watch((params) => console.log('fetchTodoListFx.start', params))
 

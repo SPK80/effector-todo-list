@@ -8,7 +8,7 @@ export const TodoList: FC<{id: string}> = ({id}) => {
     const fetchTodoListEvent = useEvent(fetchTodoListFx)
     useEffect(() => {
         fetchTodoListEvent(id)
-    }, [])
+    }, [id])
 
     return (
         <div>
@@ -18,6 +18,7 @@ export const TodoList: FC<{id: string}> = ({id}) => {
                     {task.status === TaskStatuses.Completed && (
                         <span> - is done</span>
                     )}
+                    <span> {task.addedDate}</span>
                 </div>
             ))}
         </div>
