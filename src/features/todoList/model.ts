@@ -1,5 +1,5 @@
 import {createEffect, createStore} from 'effector'
-import {api, TaskType} from './api'
+import {api, TaskStatuses, TaskType} from './api'
 
 const $tasksPacks = createStore<{[todoListId: string]: TaskType[]}>({})
 
@@ -9,6 +9,41 @@ export const initiateTasks = ({todoListId}: {todoListId: string}) => {
 
 export const fetchTodoListFx = createEffect(
     async (id: string) => await api.getTasks(id),
+)
+
+const findTask = (taskId: string, todoListId: string) =>
+    $tasksPacks.getState()[todoListId].find((t) => t.id === taskId)
+
+export const updateTaskTitleFx = createEffect(
+    async ({
+        taskId,
+        todoListId,
+        title,
+    }: {
+        taskId: string
+        todoListId: string
+        title: string
+    }) => {
+        const task = findTask(taskId, todoListId)
+        if (!task) throw new Error('Task not found!')
+        return await api.updateTask(taskId, todoListId, {...task, title})
+    },
+)
+
+export const updateTaskStatusFx = createEffect(
+    async ({
+        taskId,
+        todoListId,
+        status,
+    }: {
+        taskId: string
+        todoListId: string
+        status: TaskStatuses
+    }) => {
+        const task = findTask(taskId, todoListId)
+        if (!task) throw new Error('Task not found!')
+        return await api.updateTask(taskId, todoListId, {...task, status})
+    },
 )
 
 $tasksPacks.on(
@@ -24,10 +59,17 @@ export const createTaskFx = createEffect(
         await api.createTask(todolistId, title),
 )
 
-$tasksPacks.on(createTaskFx.done, (packs, {params, result: data}) => ({
-    ...packs,
-    [params.todolistId]: [data.item, ...packs[params.todolistId]],
-}))
+$tasksPacks
+    .on(createTaskFx.done, (packs, {params, result: {item}}) => ({
+        ...packs,
+        [params.todolistId]: [item, ...packs[params.todolistId]],
+    }))
+    .on(updateTaskStatusFx.doneData, (packs, {item}) => ({
+        ...packs,
+        [item.todoListId]: packs[item.todoListId].map((task) =>
+            task.id === item.id ? item : task,
+        ),
+    }))
 
 //-watchers---------------------------------------------------------------------
 
