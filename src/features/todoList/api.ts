@@ -43,10 +43,10 @@ export const api = {
     async updateTask(
         taskId: string,
         todoListId: string,
-        updatingModel: UpdateDomainTaskModelType,
+        updatingModel: UpdateTaskType,
     ) {
         return instance
-            .put<ResponseWithResultCodeType>(
+            .put<ResponseWithResultCodeType<{item: TaskType}>>(
                 `todo-lists/${todoListId}/tasks/${taskId}`,
                 updatingModel,
             )
@@ -57,26 +57,20 @@ export const api = {
 }
 
 //===Types==============================================================================================================
-export type TaskType = {
-    description: string
-    title: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
+export type TaskType = UpdateTaskType & {
     id: string
     todoListId: string
     order: number
     addedDate: string
 }
 
-export type UpdateDomainTaskModelType = {
-    title?: string
-    description?: string
-    status?: TaskStatuses
-    priority?: TaskPriorities
-    startDate?: string
-    deadline?: string
+export type UpdateTaskType = {
+    title: string
+    description: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
 }
 
 export enum TaskStatuses {
