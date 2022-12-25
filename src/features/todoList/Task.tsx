@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from 'react'
-import {TaskStatuses, TaskType} from '../api'
-import {updateTaskStatusFx} from '../model'
+import {TaskStatuses, TaskType} from './api'
+import {updateTaskStatusFx} from './model'
 
 type PropsType = {
     task: TaskType

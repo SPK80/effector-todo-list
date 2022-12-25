@@ -55,14 +55,14 @@ $tasksPacks.on(
 )
 
 export const createTaskFx = createEffect(
-    async ({todolistId, title}: {todolistId: string; title: string}) =>
-        await api.createTask(todolistId, title),
+    async ({todoListId, title}: {todoListId: string; title: string}) =>
+        await api.createTask(todoListId, title),
 )
 
 $tasksPacks
     .on(createTaskFx.done, (packs, {params, result: {item}}) => ({
         ...packs,
-        [params.todolistId]: [item, ...packs[params.todolistId]],
+        [params.todoListId]: [item, ...packs[params.todoListId]],
     }))
     .on(updateTaskStatusFx.doneData, (packs, {item}) => ({
         ...packs,
