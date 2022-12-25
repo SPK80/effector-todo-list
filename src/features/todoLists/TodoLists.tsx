@@ -14,11 +14,11 @@ export const TodoLists: FC = () => {
 
     return (
         <div>
-            <AddTodoListForm/>
+            <AddTodoListForm />
             {todoLists.map((tl, index) => (
                 <div key={index}>
                     <span>{tl.title}</span>
-                    <TodoList id={tl.id} />
+                    <TodoList todoListId={tl.id} />
                     <br />
                 </div>
             ))}

@@ -1,20 +1,20 @@
 import React, {FC, useEffect} from 'react'
 import {useEvent, useStore} from 'effector-react'
 import {fetchTodoListFx, initiateTasks} from './model'
-import {AddTaskForm} from './AddTaskForm'
 import {Task} from './Task'
+import {AddTaskForm} from './AddTaskForm'
 
-export const TodoList: FC<{id: string}> = ({id}) => {
-    const todoList = useStore(initiateTasks({todoListId: id}))
+export const TodoList: FC<{todoListId: string}> = ({todoListId}) => {
+    const todoList = useStore(initiateTasks({todoListId: todoListId}))
     const fetchTodoListEvent = useEvent(fetchTodoListFx)
 
     useEffect(() => {
-        fetchTodoListEvent(id)
-    }, [id])
+        fetchTodoListEvent(todoListId)
+    }, [todoListId])
 
     return (
         <div>
-            <AddTaskForm todoListId={id} />
+            <AddTaskForm todoListId={todoListId} />
 
             <br />
             {todoList &&
