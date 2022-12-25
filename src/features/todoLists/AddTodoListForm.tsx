@@ -1,12 +1,12 @@
 import React, {ChangeEvent, FC, FormEvent, useState} from 'react'
-import {createTaskFx} from './model'
+import {createTodoListFx} from './model'
 
-export const AddTaskForm: FC<{todoListId: string}> = ({todoListId}) => {
+export const AddTodoListForm: FC = () => {
     const [title, setTitle] = useState('')
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        createTaskFx({title, todoListId}).then(() => setTitle(''))
+        createTodoListFx({title}).then(() => setTitle(''))
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
