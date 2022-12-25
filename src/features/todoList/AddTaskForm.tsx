@@ -1,17 +1,16 @@
-import React, {ChangeEvent, FC, FormEvent} from 'react'
-import {useStore} from 'effector-react'
-import {$input, changeTaskTitle, submitForm} from './model'
+import React, {ChangeEvent, FC, FormEvent, useState} from 'react'
+import {createTaskFx} from './model'
 
 export const AddTaskForm: FC<{todolistId: string}> = ({todolistId}) => {
-    const title = useStore($input)
+    const [title, setTitle] = useState('')
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        submitForm({title, todolistId})
+        createTaskFx({title, todolistId})
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        changeTaskTitle(e.target.value)
+        setTitle(e.target.value)
     }
 
     return (
