@@ -1,39 +1,17 @@
-import React, {FC} from 'react'
+import React, {FC, useState} from 'react'
 import {createTodoListFx} from './model'
-import {Button, Form, Input} from 'antd'
-import {PlusSquareOutlined} from '@ant-design/icons'
+import {SubmitInput} from 'common/components/SubmitInput'
 
 export const AddTodoListForm: FC = () => {
-    const [form] = Form.useForm()
-
-    const handleSubmit = ({title}: {title: string}) =>
-        createTodoListFx({title}).then(() => form.resetFields())
+    const [title, setTitle] = useState('')
+    const handleSubmit = () =>
+        createTodoListFx({title}).then(() => setTitle(''))
 
     return (
-        <Form
-            form={form}
-            name="AddTodoListForm"
-            style={{display: 'flex'}}
-            initialValues={{title: ''}}
-            autoComplete="off"
-            onFinish={handleSubmit}
-        >
-            <Form.Item
-                label="Title"
-                name="title"
-                rules={[{required: true, message: 'Please input title!'}]}
-                style={{marginRight: 4}}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item>
-                <Button
-                    type="text"
-                    htmlType="submit"
-                    icon={<PlusSquareOutlined style={{fontSize: '22px'}} />}
-                ></Button>
-            </Form.Item>
-        </Form>
+        <SubmitInput
+            value={title}
+            onChange={setTitle}
+            onSubmit={handleSubmit}
+        />
     )
 }

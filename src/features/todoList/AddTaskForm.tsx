@@ -1,22 +1,18 @@
-import React, {ChangeEvent, FC, FormEvent, useState} from 'react'
+import React, {FC, useState} from 'react'
 import {createTaskFx} from './model'
+import {SubmitInput} from 'common/components/SubmitInput'
 
 export const AddTaskForm: FC<{todoListId: string}> = ({todoListId}) => {
     const [title, setTitle] = useState('')
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+    const handleSubmit = () =>
         createTaskFx({title, todoListId}).then(() => setTitle(''))
-    }
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.target.value)
-    }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input onChange={handleChange} value={title} />
-            <button type="submit">Add</button>
-        </form>
+        <SubmitInput
+            value={title}
+            onChange={setTitle}
+            onSubmit={handleSubmit}
+        />
     )
 }
