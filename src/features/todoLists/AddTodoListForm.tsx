@@ -1,6 +1,7 @@
 import React, {FC} from 'react'
 import {createTodoListFx} from './model'
 import {Button, Form, Input} from 'antd'
+import {PlusSquareOutlined} from '@ant-design/icons'
 
 export const AddTodoListForm: FC = () => {
     const [form] = Form.useForm()
@@ -21,15 +22,17 @@ export const AddTodoListForm: FC = () => {
                 label="Title"
                 name="title"
                 rules={[{required: true, message: 'Please input title!'}]}
-                style={{marginRight: 8}}
+                style={{marginRight: 4}}
             >
                 <Input />
             </Form.Item>
 
             <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Add
-                </Button>
+                <Button
+                    type="text"
+                    htmlType="submit"
+                    icon={<PlusSquareOutlined style={{fontSize: '22px'}} />}
+                ></Button>
             </Form.Item>
         </Form>
     )
