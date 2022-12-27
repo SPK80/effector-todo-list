@@ -2,7 +2,6 @@
   "name": "effector-todo-list",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Samurai-way.github.io/effector-todo-list",
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
     "@testing-library/jest-dom": "^5.14.1",
@@ -16,7 +15,6 @@
     "axios": "^1.2.1",
     "effector": "^22.4.1",
     "effector-react": "^22.4.0",
-    "gh-pages": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -27,9 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
