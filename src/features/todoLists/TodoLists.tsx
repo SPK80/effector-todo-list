@@ -1,9 +1,9 @@
 import React, {FC, useEffect} from 'react'
 import {useEvent, useStore} from 'effector-react'
 import {$todoLists, fetchTodoListsFx} from './model'
-import {TasksList, AddTaskForm} from 'features/todoList'
 import {AddTodoListForm} from './AddTodoListForm'
 import {Card, Space} from 'antd'
+import {TodoList} from './TodoList'
 
 export const TodoLists: FC = () => {
     const todoLists = useStore($todoLists)
@@ -25,10 +25,7 @@ export const TodoLists: FC = () => {
                     }}
                 >
                     {todoLists.map((tl, index) => (
-                        <Card key={index} title={tl.title} size="small">
-                            <AddTaskForm todoListId={tl.id} />
-                            <TasksList todoListId={tl.id} />
-                        </Card>
+                        <TodoList key={index} data={tl} />
                     ))}
                 </Space>
             </Card>
