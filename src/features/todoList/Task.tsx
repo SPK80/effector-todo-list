@@ -1,13 +1,15 @@
-import React, {ChangeEvent} from 'react'
+import React from 'react'
 import {TaskStatuses, TaskType} from './api'
 import {updateTaskStatusFx} from './model'
+import {Checkbox} from 'antd'
+import {CheckboxChangeEvent} from 'antd/es/checkbox'
 
 type PropsType = {
     task: TaskType
 }
 
 export const Task: React.FC<PropsType> = ({task}) => {
-    const handleStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleStatusChange = (e: CheckboxChangeEvent) => {
         updateTaskStatusFx({
             status: e.target.checked
                 ? TaskStatuses.Completed
@@ -19,12 +21,12 @@ export const Task: React.FC<PropsType> = ({task}) => {
 
     return (
         <div>
-            <span>{task.title}</span>
-            <input
-                type="checkbox"
+            <Checkbox
                 checked={task.status === TaskStatuses.Completed}
                 onChange={handleStatusChange}
-            />
+            >
+                {task.title}
+            </Checkbox>
         </div>
     )
 }
