@@ -46,20 +46,17 @@ export const updateTaskStatusFx = createEffect(
     },
 )
 
-$tasksPacks.on(
-    fetchTodoListFx.done,
-    (packs, {params: todoListId, result: data}) => ({
-        ...packs,
-        [todoListId]: data.items,
-    }),
-)
-
 export const createTaskFx = createEffect(
     async ({todoListId, title}: {todoListId: string; title: string}) =>
         await api.createTask(todoListId, title),
 )
 
 $tasksPacks
+    .on(fetchTodoListFx.done, (packs, {params: todoListId, result: data}) => ({
+        ...packs,
+        [todoListId]: data.items,
+    }))
+
     .on(createTaskFx.done, (packs, {params, result: {item}}) => ({
         ...packs,
         [params.todoListId]: [item, ...packs[params.todoListId]],
@@ -70,6 +67,14 @@ $tasksPacks
             task.id === item.id ? item : task,
         ),
     }))
+    .on(updateTaskTitleFx.done, (packs, {params, result}) => {
+        return {
+            ...packs,
+            [params.todoListId]: packs[params.todoListId].map((t) =>
+                t.id === params.taskId ? result.item : t,
+            ),
+        }
+    })
 
 //-watchers---------------------------------------------------------------------
 
