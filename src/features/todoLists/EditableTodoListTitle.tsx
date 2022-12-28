@@ -10,6 +10,7 @@ export const EditableTodoListTitle: FC<{id: string; value: string}> = ({
 }) => {
     return (
         <Title
+            style={{marginTop: 4}}
             level={5}
             editable={{
                 onChange: (title) =>
