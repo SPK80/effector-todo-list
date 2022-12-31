@@ -15,6 +15,11 @@ export const updateTodoListTitleFx = createEffect(
         await api.updateTodoListTitle(todolistId, title),
 )
 
+export const deleteTodoListFx = createEffect(
+    async ({todolistId}: {todolistId: string}) =>
+        await api.deleteTodoList(todolistId),
+)
+
 $todoLists
     .on(fetchTodoListsFx.doneData, (_, data) => [...data])
     .on(createTodoListFx.doneData, (todoLists, {item}) => [item, ...todoLists])
@@ -22,6 +27,9 @@ $todoLists
         todoLists.map((tl) =>
             tl.id === params.todolistId ? {...tl, title: params.title} : tl,
         ),
+    )
+    .on(deleteTodoListFx.done, (todoLists, {params}) =>
+        todoLists.filter((t) => t.id !== params.todolistId),
     )
 
 //-watchers---------------------------------------------------------------------

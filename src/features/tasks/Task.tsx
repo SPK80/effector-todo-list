@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import {TaskStatuses, TaskType} from './api'
-import {updateTaskStatusFx} from './model'
+import {deleteTaskFx, updateTaskStatusFx} from './model'
 import {Checkbox} from 'antd'
 import {CheckboxChangeEvent} from 'antd/es/checkbox'
 import {EditableTaskTitle} from './EditableTaskTitle'
+import {DeleteButton} from 'common/components/DeleteButton'
 
 type PropsType = {
     task: TaskType
@@ -22,6 +23,10 @@ export const Task: React.FC<PropsType> = ({task}) => {
         })
     }
 
+    const handleDeleteClick = () => {
+        deleteTaskFx({taskId: task.id, todoListId: task.todoListId})
+    }
+
     return (
         <div>
             {!isTitleEditing && (
@@ -37,6 +42,7 @@ export const Task: React.FC<PropsType> = ({task}) => {
                 onStartEditing={() => setIsTitleEditing(true)}
                 onEndEditing={() => setIsTitleEditing(false)}
             />
+            <DeleteButton onClick={handleDeleteClick} />
         </div>
     )
 }
