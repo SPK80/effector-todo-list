@@ -51,6 +51,11 @@ export const createTaskFx = createEffect(
         await api.createTask(todoListId, title),
 )
 
+export const deleteTaskFx = createEffect(
+    async ({taskId, todoListId}: {taskId: string; todoListId: string}) =>
+        await api.removeTask(taskId, todoListId),
+)
+
 $tasksPacks
     .on(fetchTodoListFx.done, (packs, {params: todoListId, result: data}) => ({
         ...packs,
@@ -67,14 +72,18 @@ $tasksPacks
             task.id === item.id ? item : task,
         ),
     }))
-    .on(updateTaskTitleFx.done, (packs, {params, result}) => {
-        return {
-            ...packs,
-            [params.todoListId]: packs[params.todoListId].map((t) =>
-                t.id === params.taskId ? result.item : t,
-            ),
-        }
-    })
+    .on(updateTaskTitleFx.done, (packs, {params, result}) => ({
+        ...packs,
+        [params.todoListId]: packs[params.todoListId].map((t) =>
+            t.id === params.taskId ? result.item : t,
+        ),
+    }))
+    .on(deleteTaskFx.done, (packs, {params}) => ({
+        ...packs,
+        [params.todoListId]: packs[params.todoListId].filter(
+            (t) => t.id !== params.taskId,
+        ),
+    }))
 
 //-watchers---------------------------------------------------------------------
 
