@@ -15,7 +15,12 @@ export const SubmitInput: FC<{
 
     return (
         <Input.Group compact>
-            <Input allowClear style={{width: 200}} onChange={handleChange} />
+            <Input
+                allowClear
+                style={{width: 200}}
+                value={value}
+                onChange={handleChange}
+            />
             <Button
                 disabled={!valid}
                 icon={<PlusSquareOutlined />}

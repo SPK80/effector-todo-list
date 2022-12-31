@@ -24,9 +24,8 @@ export const EditableTaskTitle: FC<PropsType> = ({
             style={{margin: 5}}
             editable={{
                 autoSize: true,
-                onChange: (title) => {
-                    updateTaskTitleFx({title, taskId, todoListId})
-                },
+                onChange: (title) =>
+                    updateTaskTitleFx({title, taskId, todoListId}),
                 onStart: onStartEditing,
                 onEnd: onEndEditing,
                 onCancel: onEndEditing,
