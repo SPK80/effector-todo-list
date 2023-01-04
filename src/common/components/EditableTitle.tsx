@@ -21,7 +21,7 @@ export const EditableTitle: FC<PropsType> = ({
             style={{margin: 5}}
             editable={{
                 autoSize: true,
-                onChange: onChanged,
+                onChange: (v: string) => v !== value && onChanged(v),
                 onStart: onStartEditing,
                 onEnd: onEndEditing,
                 onCancel: onEndEditing,
