@@ -1,5 +1,7 @@
 import {createApi, createDomain, forward, sample, Effect} from 'effector'
 
+export type SubmitFormModelType = ReturnType<typeof createSubmitFormModel>
+
 export const createSubmitFormModel = (
     name: string,
     effect: Effect<string, any>,

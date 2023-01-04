@@ -4,8 +4,8 @@ import {useEvent, useStore} from 'effector-react'
 import {DeleteButton} from 'common/components/DeleteButton'
 import {TodoListModelType} from './todoListModel'
 import {EditableTitle} from 'common/components/EditableTitle'
-import {AddTaskForm} from './AddTaskForm'
 import {Task} from './task/Task'
+import {AddItemForm} from 'common/components/AddItemForm'
 
 export const TodoList: FC<{
     model: TodoListModelType
@@ -35,7 +35,7 @@ export const TodoList: FC<{
                 </Space>
             }
         >
-            <AddTaskForm model={model} />
+            <AddItemForm model={model.addTaskFormModel} />
 
             {tasks &&
                 tasks.map((task, index) => <Task key={index} model={task} />)}

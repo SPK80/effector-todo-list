@@ -2,6 +2,7 @@ import {createDomain} from 'effector'
 import {taskApi as tasksApi} from 'common/api/taskApi'
 import {todoListApi, TodoListType} from 'common/api/todoListApi'
 import {createTaskModel, TaskModelType} from './task/taskModel'
+import {createSubmitFormModel} from '../submitFormModel'
 
 export type TodoListModelType = ReturnType<typeof createTodoListModel>
 
@@ -26,8 +27,7 @@ export const createTodoListModel = (todolist: TodoListType) => {
     )
 
     const createTaskFx = domain.createEffect(
-        async ({title}: {title: string}) =>
-            await tasksApi.createTask(todolist.id, title),
+        async (title: string) => await tasksApi.createTask(todolist.id, title),
     )
 
     const deleteTaskFx = domain.createEffect(
@@ -55,6 +55,8 @@ export const createTodoListModel = (todolist: TodoListType) => {
             tasks.filter((t) => t.id !== params.taskId),
         )
 
+    const addTaskFormModel = createSubmitFormModel('addTaskForm', createTaskFx)
+
     return {
         id: todolist.id,
         $title,
@@ -63,5 +65,6 @@ export const createTodoListModel = (todolist: TodoListType) => {
         fetchTasksFx,
         createTaskFx,
         deleteTaskFx,
+        addTaskFormModel,
     }
 }
