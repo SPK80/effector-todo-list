@@ -1,31 +1,27 @@
-import {Typography} from 'antd'
 import React, {FC} from 'react'
-import {updateTaskTitleFx} from './model'
+import {Typography} from 'antd'
 
 const {Text} = Typography
 
 type PropsType = {
-    taskId: string
-    todoListId: string
     value: string
-    onStartEditing: () => void
-    onEndEditing: () => void
+    onStartEditing?: () => void
+    onEndEditing?: () => void
+    onChanged: (value: string) => void
 }
 
-export const EditableTaskTitle: FC<PropsType> = ({
-    taskId,
-    todoListId,
+export const EditableTitle: FC<PropsType> = ({
     value,
     onStartEditing,
     onEndEditing,
+    onChanged,
 }) => (
     <span onBlur={onEndEditing}>
         <Text
             style={{margin: 5}}
             editable={{
                 autoSize: true,
-                onChange: (title) =>
-                    updateTaskTitleFx({title, taskId, todoListId}),
+                onChange: onChanged,
                 onStart: onStartEditing,
                 onEnd: onEndEditing,
                 onCancel: onEndEditing,

@@ -1,17 +1,21 @@
 import React, {FC, useEffect} from 'react'
 import {useEvent, useStore} from 'effector-react'
-import {$todoLists, fetchTodoListsFx} from './model'
-import {AddTodoListForm} from './AddTodoListForm'
 import {Card, Space} from 'antd'
-import {TodoList} from './TodoList'
+import {$todoLists, deleteTodoListFx, fetchTodoListsFx} from './model'
+import {AddTodoListForm} from './AddTodoListForm'
+import {TodoList} from './todoList/TodoList'
 
 export const TodoLists: FC = () => {
     const todoLists = useStore($todoLists)
-    const fetchTodoListsEvent = useEvent(fetchTodoListsFx)
+    const fetchTodoLists = useEvent(fetchTodoListsFx)
+    const deleteTodoList = useEvent(deleteTodoListFx)
 
     useEffect(() => {
-        fetchTodoListsEvent()
-    }, [])
+        fetchTodoLists()
+    }, [fetchTodoLists])
+
+    const handleTodoListDelete = (todolistId: string) =>
+        deleteTodoList({todolistId})
 
     return (
         <Space size="middle" style={{padding: 16}}>
@@ -25,7 +29,11 @@ export const TodoLists: FC = () => {
                     }}
                 >
                     {todoLists.map((tl, index) => (
-                        <TodoList key={index} data={tl} />
+                        <TodoList
+                            key={index}
+                            model={tl}
+                            onDelete={handleTodoListDelete}
+                        />
                     ))}
                 </Space>
             </Card>

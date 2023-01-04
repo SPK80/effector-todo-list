@@ -1,12 +1,11 @@
 import React, {FC, useState} from 'react'
-import {createTaskFx} from './model'
 import {SubmitInput} from 'common/components/SubmitInput'
+import {TodoListModelType} from './todoListModel'
 
-export const AddTaskForm: FC<{todoListId: string}> = ({todoListId}) => {
+export const AddTaskForm: FC<{model: TodoListModelType}> = ({model}) => {
     const [title, setTitle] = useState('')
-
     const handleSubmit = () =>
-        createTaskFx({title, todoListId}).then(() => setTitle(''))
+        model.createTaskFx({title}).then(() => setTitle(''))
 
     return (
         <SubmitInput

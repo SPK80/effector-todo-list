@@ -6,7 +6,7 @@ import {
     ResponseWithResultCodeType,
 } from 'common/api/parseResponse'
 
-export const api = {
+export const todoListApi = {
     async getTodoLists() {
         return instance
             .get<Array<TodoListType>>('todo-lists')
