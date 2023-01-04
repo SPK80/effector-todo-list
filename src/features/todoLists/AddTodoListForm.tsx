@@ -1,17 +1,17 @@
-import React, {FC, useState} from 'react'
-import {useEvent} from 'effector-react'
-import {createTodoListFx} from './model'
+import React, {FC} from 'react'
+import {useStore} from 'effector-react'
+import {addTodoListFormModel} from './model'
 import {SubmitInput} from 'common/components/SubmitInput'
 
 export const AddTodoListForm: FC = () => {
-    const [title, setTitle] = useState('')
-    const createTodoList = useEvent(createTodoListFx)
-    const handleSubmit = () => createTodoList({title}).then(() => setTitle(''))
+    const title = useStore(addTodoListFormModel.$title)
+    const handleSubmit = () => addTodoListFormModel.submit()
+    const handleChange = (value: string) => addTodoListFormModel.change(value)
 
     return (
         <SubmitInput
             value={title}
-            onChange={setTitle}
+            onChange={handleChange}
             onSubmit={handleSubmit}
         />
     )
