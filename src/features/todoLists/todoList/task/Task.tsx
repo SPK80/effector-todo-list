@@ -5,23 +5,20 @@ import {CheckboxChangeEvent} from 'antd/es/checkbox'
 import {EditableTitle} from 'common/components/EditableTitle'
 import {DeleteButton} from 'common/components/DeleteButton'
 import {TaskModelType} from './taskModel'
-import {useStore} from 'effector-react'
+import {useEvent, useStore} from 'effector-react'
 
 export const Task: React.FC<{model: TaskModelType}> = ({model}) => {
     const [isTitleEditing, setIsTitleEditing] = useState(false)
     const title = useStore(model.$title)
     const status = useStore(model.$status)
+    const updateTitle = useEvent(model.updateTitleFx)
+    const deleteTask = useEvent(model.deleteFx)
+    const updateStatus = useEvent(model.updateStatusFx)
 
     const handleStatusChange = (e: CheckboxChangeEvent) =>
-        model.updateStatusFx(
+        updateStatus(
             e.target.checked ? TaskStatuses.Completed : TaskStatuses.New,
         )
-
-    const handleDeleteClick = () => model.deleteFx()
-
-    const handleChangedTitle = (title: string) => {
-        model.updateTitleFx(title)
-    }
 
     return (
         <div>
@@ -35,9 +32,9 @@ export const Task: React.FC<{model: TaskModelType}> = ({model}) => {
                 value={title}
                 onStartEditing={() => setIsTitleEditing(true)}
                 onEndEditing={() => setIsTitleEditing(false)}
-                onChanged={handleChangedTitle}
+                onChanged={updateTitle}
             />
-            {!isTitleEditing && <DeleteButton onClick={handleDeleteClick} />}
+            {!isTitleEditing && <DeleteButton onClick={deleteTask} />}
         </div>
     )
 }

@@ -12,12 +12,12 @@ export const createTodoListModel = (todolist: TodoListType) => {
     const $title = domain.createStore(todolist.title)
 
     const updateTitleFx = domain.createEffect(
-        async ({title}: {title: string}) =>
+        async (title: string) =>
             await todoListApi.updateTodoListTitle(todolist.id, title),
     )
 
     $title.on(updateTitleFx.done, (_, {params}) => {
-        return params.title
+        return params
     })
 
     const $tasks = domain.createStore<TaskModelType[]>([])

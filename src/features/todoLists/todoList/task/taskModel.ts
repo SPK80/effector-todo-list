@@ -32,11 +32,6 @@ export const createTaskModel = (task: TaskType) => {
     const $status = domain.createStore(task.status)
     $status.on(updateStatusFx.doneData, (_, {item}) => item.status)
 
-    // const task$ = domain.createStore(task)
-    // task$
-    //     .on(updateTitleFx.doneData, (state, {item}) => item)
-    //     .on(updateStatusFx.doneData, (state, {item}) => item)
-
     return {
         id: task.id,
         $title,

@@ -1,11 +1,11 @@
 import React, {FC, useEffect} from 'react'
 import {Card, Space} from 'antd'
 import {useEvent, useStore} from 'effector-react'
-import {DeleteButton} from 'common/components/DeleteButton'
 import {TodoListModelType} from './todoListModel'
+import {DeleteButton} from 'common/components/DeleteButton'
 import {EditableTitle} from 'common/components/EditableTitle'
-import {Task} from './task/Task'
 import {AddItemForm} from 'common/components/AddItemForm'
+import {Task} from './task/Task'
 
 export const TodoList: FC<{
     model: TodoListModelType
@@ -14,23 +14,20 @@ export const TodoList: FC<{
     const tasks = useStore(model.$tasks)
     const title = useStore(model.$title)
     const fetchTasks = useEvent(model.fetchTasksFx)
+    const updateTitle = useEvent(model.updateTitleFx)
 
     useEffect(() => {
         fetchTasks()
     }, [fetchTasks])
 
     const handleDeleteClick = () => onDelete(model.id)
-    const handleChangedTitle = (title: string) => model.updateTitleFx({title})
 
     return (
         <Card
             size="small"
             title={
                 <Space align="center">
-                    <EditableTitle
-                        value={title}
-                        onChanged={handleChangedTitle}
-                    />
+                    <EditableTitle value={title} onChanged={updateTitle} />
                     <DeleteButton onClick={handleDeleteClick} />
                 </Space>
             }
