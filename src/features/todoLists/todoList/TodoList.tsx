@@ -26,7 +26,7 @@ export const TodoList: FC<{
         <Card
             size="small"
             title={
-                <Space align="center">
+                <Space align="center" style={{marginLeft: 8}}>
                     <EditableTitle value={title} onChanged={updateTitle} />
                     <DeleteButton onClick={handleDeleteClick} />
                 </Space>
