@@ -8,7 +8,7 @@ import {
     ResponseWithResultCodeType,
 } from 'common/api/parseResponse'
 
-export const api = {
+export const taskApi = {
     async getTasks(todolistId: string) {
         return instance
             .get<ResponseWithErrorType<TaskType>>(

@@ -3977,10 +3977,10 @@ effector-react@^22.4.0:
   dependencies:
     use-sync-external-store "^1.0.0"
 
-effector@^22.4.1:
-  version "22.4.1"
-  resolved "https://registry.yarnpkg.com/effector/-/effector-22.4.1.tgz#ba3c01622e42cf2784c83d2a4e7321e7caeef601"
-  integrity sha512-/GeCeEnSMaLvuskQMBI6bzd5V3GvRRv8mI/Wed9JEenstYGDhJQTIVkO5K+Fdt3KC3d5T8wdWxMzGVkKdaDAEw==
+effector@^21.8.12:
+  version "21.8.12"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-21.8.12.tgz#075ba0e17e41386bef271567a259585f407067ae"
+  integrity sha512-Xlw+qvPlfiF0qOHwRQ3RzS5/TtbfpCZ88ucLqG6o8algEV0nxI+Rd8fyJObDljfqQH0+2ByInawu731IXz5RCA==
 
 ejs@^3.1.6:
   version "3.1.8"

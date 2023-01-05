@@ -1,39 +1,37 @@
-import {createEffect, createStore} from 'effector'
-import {api, TodoListType} from './api'
+import {createDomain} from 'effector'
+import {todoListApi} from 'common/api/todoListApi'
+import {createTodoListModel, TodoListModelType} from './todoList/todoListModel'
+import {createSubmitFormModel} from './submitFormModel'
 
-export const $todoLists = createStore<TodoListType[]>([])
-export const fetchTodoListsFx = createEffect(
-    async () => await api.getTodoLists(),
+const domain = createDomain('todoLists')
+const $todoLists = domain.createStore<TodoListModelType[]>([])
+
+const fetchTodoListsFx = domain.createEffect(
+    async () => await todoListApi.getTodoLists(),
 )
 
-export const createTodoListFx = createEffect(
-    async ({title}: {title: string}) => await api.createTodoList(title),
+const createTodoListFx = domain.createEffect(
+    async (title: string) => await todoListApi.createTodoList(title),
 )
 
-export const updateTodoListTitleFx = createEffect(
-    async ({todolistId, title}: {todolistId: string; title: string}) =>
-        await api.updateTodoListTitle(todolistId, title),
-)
-
-export const deleteTodoListFx = createEffect(
+const deleteTodoListFx = domain.createEffect(
     async ({todolistId}: {todolistId: string}) =>
-        await api.deleteTodoList(todolistId),
+        await todoListApi.deleteTodoList(todolistId),
 )
 
 $todoLists
-    .on(fetchTodoListsFx.doneData, (_, data) => [...data])
-    .on(createTodoListFx.doneData, (todoLists, {item}) => [item, ...todoLists])
-    .on(updateTodoListTitleFx.done, (todoLists, {params}) =>
-        todoLists.map((tl) =>
-            tl.id === params.todolistId ? {...tl, title: params.title} : tl,
-        ),
-    )
+    .on(fetchTodoListsFx.doneData, (_, data) => data.map(createTodoListModel))
+    .on(createTodoListFx.doneData, (todoLists, {item}) => [
+        createTodoListModel(item),
+        ...todoLists,
+    ])
     .on(deleteTodoListFx.done, (todoLists, {params}) =>
         todoLists.filter((t) => t.id !== params.todolistId),
     )
 
-//-watchers---------------------------------------------------------------------
-
-fetchTodoListsFx.doneData.watch((data) =>
-    console.log('fetchTodoListsFx.doneData', data),
+const addTodoListFormModel = createSubmitFormModel(
+    'addTodoListForm',
+    createTodoListFx,
 )
+
+export {$todoLists, fetchTodoListsFx, deleteTodoListFx, addTodoListFormModel}
