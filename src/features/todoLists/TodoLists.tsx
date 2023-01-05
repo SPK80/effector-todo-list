@@ -6,7 +6,7 @@ import {
     addTodoListFormModel,
     deleteTodoListFx,
     fetchTodoListsFx,
-} from './model'
+} from './todoListsModel'
 import {AddItemForm} from 'common/components/AddItemForm'
 import {TodoList} from './todoList/TodoList'
 

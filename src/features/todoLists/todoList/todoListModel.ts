@@ -76,9 +76,6 @@ export const createTodoListModel = (todolist: TodoListType) => {
         fn: (source) => filterModel.apply(source),
     })
 
-    $filteredTasks.watch(console.log)
-    filterModel.setFilter.watch(console.log)
-
     return {
         id: todolist.id,
         $title,
