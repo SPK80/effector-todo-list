@@ -1,25 +1,20 @@
-import React, {FC, useEffect} from 'react'
+import React, {FC} from 'react'
 import {Card, Space} from 'antd'
 import {useEvent, useStore} from 'effector-react'
-import {TodoListModelType} from './todoListModel'
+import {TodoListModelType} from './models/todoListModel'
 import {DeleteButton} from 'common/components/DeleteButton'
 import {EditableTitle} from 'common/components/EditableTitle'
-import {AddItemForm} from 'common/components/AddItemForm'
-import {Task} from './task/Task'
+import {SubmitItemForm} from 'common/components/SubmitItemForm'
 import {TasksFilter} from './TasksFilter'
+import {Tasks} from './Tasks'
 
 export const TodoList: FC<{
     model: TodoListModelType
     onDelete: (id: string) => void
 }> = ({model, onDelete}) => {
-    const tasks = useStore(model.$filteredTasks)
     const title = useStore(model.$title)
-    const fetchTasks = useEvent(model.fetchTasksFx)
-    const updateTitle = useEvent(model.updateTitleFx)
 
-    useEffect(() => {
-        fetchTasks()
-    }, [fetchTasks])
+    const updateTitle = useEvent(model.updateTitleFx)
 
     const handleDeleteClick = () => onDelete(model.id)
 
@@ -33,10 +28,9 @@ export const TodoList: FC<{
                 </Space>
             }
         >
-            <AddItemForm model={model.addTaskFormModel} />
+            <SubmitItemForm model={model.addTaskFormModel} />
             <TasksFilter model={model.filterModel} />
-            {tasks &&
-                tasks.map((task, index) => <Task key={index} model={task} />)}
+            <Tasks model={model.tasksModel} />
         </Card>
     )
 }

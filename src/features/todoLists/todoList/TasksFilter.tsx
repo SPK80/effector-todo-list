@@ -1,5 +1,5 @@
 import React from 'react'
-import {TaskFilterType, TasksFilterModelType} from './tasksFilterModel'
+import {TaskFilterType, TasksFilterModelType} from './models/tasksFilterModel'
 import {useEvent, useStore} from 'effector-react'
 import {Radio, RadioChangeEvent} from 'antd'
 

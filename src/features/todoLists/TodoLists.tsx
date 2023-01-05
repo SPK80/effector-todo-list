@@ -6,8 +6,8 @@ import {
     addTodoListFormModel,
     deleteTodoListFx,
     fetchTodoListsFx,
-} from './todoListsModel'
-import {AddItemForm} from 'common/components/AddItemForm'
+} from './models/todoListsModel'
+import {SubmitItemForm} from 'common/components/SubmitItemForm'
 import {TodoList} from './todoList/TodoList'
 
 export const TodoLists: FC = () => {
@@ -25,7 +25,7 @@ export const TodoLists: FC = () => {
     return (
         <Space size="middle" style={{padding: 16}}>
             <Card
-                title={<AddItemForm model={addTodoListFormModel} />}
+                title={<SubmitItemForm model={addTodoListFormModel} />}
                 size="small"
             >
                 <Space
