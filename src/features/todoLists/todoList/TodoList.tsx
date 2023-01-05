@@ -6,12 +6,13 @@ import {DeleteButton} from 'common/components/DeleteButton'
 import {EditableTitle} from 'common/components/EditableTitle'
 import {AddItemForm} from 'common/components/AddItemForm'
 import {Task} from './task/Task'
+import {TasksFilter} from './TasksFilter'
 
 export const TodoList: FC<{
     model: TodoListModelType
     onDelete: (id: string) => void
 }> = ({model, onDelete}) => {
-    const tasks = useStore(model.$tasks)
+    const tasks = useStore(model.$filteredTasks)
     const title = useStore(model.$title)
     const fetchTasks = useEvent(model.fetchTasksFx)
     const updateTitle = useEvent(model.updateTitleFx)
@@ -33,7 +34,7 @@ export const TodoList: FC<{
             }
         >
             <AddItemForm model={model.addTaskFormModel} />
-
+            <TasksFilter model={model.filterModel} />
             {tasks &&
                 tasks.map((task, index) => <Task key={index} model={task} />)}
         </Card>

@@ -1,8 +1,9 @@
-import {createDomain} from 'effector'
+import {createDomain, forward, sample} from 'effector'
 import {taskApi as tasksApi} from 'common/api/taskApi'
 import {todoListApi, TodoListType} from 'common/api/todoListApi'
 import {createTaskModel, TaskModelType} from './task/taskModel'
 import {createSubmitFormModel} from '../submitFormModel'
+import {createTasksFilterModel} from './tasksFilterModel'
 
 export type TodoListModelType = ReturnType<typeof createTodoListModel>
 
@@ -16,9 +17,7 @@ export const createTodoListModel = (todolist: TodoListType) => {
             await todoListApi.updateTodoListTitle(todolist.id, title),
     )
 
-    $title.on(updateTitleFx.done, (_, {params}) => {
-        return params
-    })
+    $title.on(updateTitleFx.done, (_, {params}) => params)
 
     const $tasks = domain.createStore<TaskModelType[]>([])
 
@@ -35,11 +34,20 @@ export const createTodoListModel = (todolist: TodoListType) => {
             await tasksApi.removeTask(taskId, todolist.id),
     )
 
+    const statusUpdated = domain.createEvent('statusUpdated')
+
     const createTaskModelWithSubs = (taskData: any) => {
         const taskModel = createTaskModel(taskData)
+
         $tasks.on(taskModel.deleteFx.done, (state, _) =>
             state.filter((t) => t.id !== taskModel.id),
         )
+
+        forward({
+            from: taskModel.updateStatusFx.doneData,
+            to: statusUpdated,
+        })
+
         return taskModel
     }
 
@@ -57,6 +65,20 @@ export const createTodoListModel = (todolist: TodoListType) => {
 
     const addTaskFormModel = createSubmitFormModel('addTaskForm', createTaskFx)
 
+    const filterModel = createTasksFilterModel('TasksFilter ' + todolist.id)
+
+    const $filteredTasks = domain.createStore<TaskModelType[]>([])
+
+    sample({
+        clock: [filterModel.setFilter, $tasks, statusUpdated],
+        source: $tasks,
+        target: $filteredTasks,
+        fn: (source) => filterModel.apply(source),
+    })
+
+    $filteredTasks.watch(console.log)
+    filterModel.setFilter.watch(console.log)
+
     return {
         id: todolist.id,
         $title,
@@ -66,5 +88,7 @@ export const createTodoListModel = (todolist: TodoListType) => {
         createTaskFx,
         deleteTaskFx,
         addTaskFormModel,
+        filterModel,
+        $filteredTasks,
     }
 }
