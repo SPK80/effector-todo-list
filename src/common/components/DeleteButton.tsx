@@ -1,8 +1,8 @@
 import React, {FC} from 'react'
-import {Button} from 'antd'
+import {Button, ButtonProps} from 'antd'
 import {DeleteOutlined} from '@ant-design/icons'
 
-export const DeleteButton: FC<{onClick: () => void}> = ({onClick}) => {
+export const DeleteButton: FC<ButtonProps> = (props) => {
     return (
         <Button
             size={'small'}
@@ -10,7 +10,7 @@ export const DeleteButton: FC<{onClick: () => void}> = ({onClick}) => {
             title={'Delete'}
             style={{marginBottom: 2}}
             icon={<DeleteOutlined />}
-            onClick={onClick}
+            {...props}
         />
     )
 }

@@ -13,8 +13,8 @@ export const TodoList: FC<{
     onDelete: (id: string) => void
 }> = ({model, onDelete}) => {
     const title = useStore(model.$title)
-
     const updateTitle = useEvent(model.updateTitleFx)
+    const isTitleUpdating = useStore(model.updateTitleFx.pending)
 
     const handleDeleteClick = () => onDelete(model.id)
 
@@ -23,7 +23,11 @@ export const TodoList: FC<{
             size="small"
             title={
                 <Space align="center" style={{marginLeft: 8}}>
-                    <EditableTitle value={title} onChanged={updateTitle} />
+                    <EditableTitle
+                        value={title}
+                        loading={isTitleUpdating}
+                        onChanged={updateTitle}
+                    />
                     <DeleteButton onClick={handleDeleteClick} />
                 </Space>
             }

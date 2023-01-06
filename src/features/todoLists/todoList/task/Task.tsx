@@ -12,8 +12,11 @@ export const Task: React.FC<{model: TaskModelType}> = ({model}) => {
     const title = useStore(model.$title)
     const status = useStore(model.$status)
     const updateTitle = useEvent(model.updateTitleFx)
+    const isTitleUpdating = useStore(model.updateTitleFx.pending)
     const deleteTask = useEvent(model.deleteFx)
+    const isDeleting = useStore(model.deleteFx.pending)
     const updateStatus = useEvent(model.updateStatusFx)
+    const isStatusUpdating = useStore(model.updateStatusFx.pending)
 
     const handleStatusChange = (e: CheckboxChangeEvent) =>
         updateStatus(
@@ -26,15 +29,19 @@ export const Task: React.FC<{model: TaskModelType}> = ({model}) => {
                 <Checkbox
                     checked={status === TaskStatuses.Completed}
                     onChange={handleStatusChange}
+                    disabled={isStatusUpdating}
                 />
             )}
             <EditableTitle
                 value={title}
+                loading={isTitleUpdating}
                 onStartEditing={() => setIsTitleEditing(true)}
                 onEndEditing={() => setIsTitleEditing(false)}
                 onChanged={updateTitle}
             />
-            {!isTitleEditing && <DeleteButton onClick={deleteTask} />}
+            {!isTitleEditing && (
+                <DeleteButton loading={isDeleting} onClick={deleteTask} />
+            )}
         </div>
     )
 }
