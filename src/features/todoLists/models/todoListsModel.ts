@@ -1,7 +1,10 @@
 import {createDomain} from 'effector'
 import {todoListApi} from 'common/api/todoListApi'
-import {createTodoListModel, TodoListModelType} from './todoList/todoListModel'
-import {createSubmitFormModel} from './submitFormModel'
+import {
+    createTodoListModel,
+    TodoListModelType,
+} from '../todoList/models/todoListModel'
+import {createSubmitFormModel} from 'common/models/submitFormModel'
 
 const domain = createDomain('todoLists')
 const $todoLists = domain.createStore<TodoListModelType[]>([])

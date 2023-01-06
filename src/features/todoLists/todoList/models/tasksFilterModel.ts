@@ -1,6 +1,6 @@
 import {createApi, createDomain} from 'effector'
 import {TaskStatuses} from 'common/api/taskApi'
-import {TaskModelType} from './task/taskModel'
+import {TaskModelType} from '../task/taskModel'
 
 export enum TaskFilterType {
     All,

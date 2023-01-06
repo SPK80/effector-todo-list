@@ -6,13 +6,15 @@ import {
     addTodoListFormModel,
     deleteTodoListFx,
     fetchTodoListsFx,
-} from './model'
-import {AddItemForm} from 'common/components/AddItemForm'
+} from './models/todoListsModel'
+import {SubmitItemForm} from 'common/components/SubmitItemForm'
 import {TodoList} from './todoList/TodoList'
+import {Loading} from 'common/components/Loading'
 
 export const TodoLists: FC = () => {
     const todoLists = useStore($todoLists)
     const fetchTodoLists = useEvent(fetchTodoListsFx)
+    const isFetching = useStore(fetchTodoListsFx.pending)
     const deleteTodoList = useEvent(deleteTodoListFx)
 
     useEffect(() => {
@@ -24,27 +26,29 @@ export const TodoLists: FC = () => {
 
     return (
         <Space size="middle" style={{padding: 16}}>
-            <Card
-                title={<AddItemForm model={addTodoListFormModel} />}
-                size="small"
-            >
-                <Space
-                    size="middle"
-                    style={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        alignItems: 'flex-start',
-                    }}
+            <Loading active={isFetching} tip="Loading...">
+                <Card
+                    title={<SubmitItemForm model={addTodoListFormModel} />}
+                    size="small"
                 >
-                    {todoLists.map((tl, index) => (
-                        <TodoList
-                            key={index}
-                            model={tl}
-                            onDelete={handleTodoListDelete}
-                        />
-                    ))}
-                </Space>
-            </Card>
+                    <Space
+                        size="middle"
+                        style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            alignItems: 'flex-start',
+                        }}
+                    >
+                        {todoLists.map((tl, index) => (
+                            <TodoList
+                                key={index}
+                                model={tl}
+                                onDelete={handleTodoListDelete}
+                            />
+                        ))}
+                    </Space>
+                </Card>
+            </Loading>
         </Space>
     )
 }
