@@ -1,5 +1,5 @@
 import {createDomain} from 'effector'
-import {taskApi, TaskStatuses, TaskType} from 'common/api/taskApi'
+import {tasksApi, TaskStatuses, TaskType} from 'common/api/taskApi'
 
 export type TaskModelType = ReturnType<typeof createTaskModel>
 
@@ -8,7 +8,7 @@ export const createTaskModel = (task: TaskType) => {
 
     const updateTitleFx = domain.createEffect(
         async (title: string) =>
-            await taskApi.updateTask(task.id, task.todoListId, {
+            await tasksApi.updateItem(task.todoListId, task.id, {
                 ...task,
                 title,
             }),
@@ -18,12 +18,12 @@ export const createTaskModel = (task: TaskType) => {
     $title.on(updateTitleFx.doneData, (_, {item}) => item.title)
 
     const deleteFx = domain.createEffect(
-        async () => await taskApi.removeTask(task.id, task.todoListId),
+        async () => await tasksApi.deleteItem(task.todoListId, task.id),
     )
 
     const updateStatusFx = domain.createEffect(
         async (status: TaskStatuses) =>
-            await taskApi.updateTask(task.id, task.todoListId, {
+            await tasksApi.updateItem(task.todoListId, task.id, {
                 ...task,
                 status,
             }),

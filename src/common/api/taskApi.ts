@@ -8,8 +8,8 @@ import {
     ResponseWithResultCodeType,
 } from 'common/api/parseResponse'
 
-export const taskApi = {
-    async getTasks(todolistId: string) {
+export const tasksApi = {
+    async getItems(todolistId: string) {
         return instance
             .get<ResponseWithErrorType<TaskType>>(
                 `todo-lists/${todolistId}/tasks`,
@@ -19,7 +19,7 @@ export const taskApi = {
             .catch(axiosErrorToString)
     },
 
-    async createTask(todolistId: string, title: string) {
+    async createItem(todolistId: string, title: string) {
         return instance
             .post<ResponseWithResultCodeType<{item: TaskType}>>(
                 `todo-lists/${todolistId}/tasks`,
@@ -30,7 +30,7 @@ export const taskApi = {
             .catch(axiosErrorToString)
     },
 
-    async removeTask(taskId: string, todoListId: string) {
+    async deleteItem(todoListId: string, taskId: string) {
         return instance
             .delete<ResponseWithResultCodeType>(
                 `todo-lists/${todoListId}/tasks/${taskId}`,
@@ -40,9 +40,9 @@ export const taskApi = {
             .catch(axiosErrorToString)
     },
 
-    async updateTask(
-        taskId: string,
+    async updateItem(
         todoListId: string,
+        taskId: string,
         updatingModel: UpdateTaskType,
     ) {
         return instance

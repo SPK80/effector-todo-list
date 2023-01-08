@@ -2,8 +2,8 @@ import {createDomain} from 'effector'
 import {todoListApi, TodoListType} from 'common/api/todoListApi'
 import {createSubmitFormModel} from 'common/models/submitFormModel'
 import {createTasksFilterModel} from './tasksFilterModel'
-import {createTasksModel} from './tasksModel'
 import {createFilteredTasksModel} from './filteredTasksModel'
+import {createTasksModel} from './tasksModel'
 
 export type TodoListModelType = ReturnType<typeof createTodoListModel>
 
@@ -23,9 +23,11 @@ export const createTodoListModel = (todolist: TodoListType) => {
 
     const addTaskFormModel = createSubmitFormModel(
         'addTaskForm',
-        tasksModel.createTaskFx,
+        tasksModel.createItemFx,
     )
+
     const filterModel = createTasksFilterModel('TasksFilter ' + todolist.id)
+
     const filteredTasksModel = createFilteredTasksModel(
         todolist.id,
         tasksModel,

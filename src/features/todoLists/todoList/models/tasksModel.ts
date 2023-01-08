@@ -1,33 +1,25 @@
-import {createDomain, forward} from 'effector'
 import {createTaskModel, TaskModelType} from '../task/taskModel'
-import {taskApi as tasksApi} from 'common/api/taskApi'
+import {tasksApi, TaskType} from 'common/api/taskApi'
+import {createCollectionModel} from 'common/models/collectionModel'
+import {createDomain, forward} from 'effector'
 
 export type TasksModelType = ReturnType<typeof createTasksModel>
 
 export const createTasksModel = (todolistId: string) => {
     const domain = createDomain('TasksModel ' + todolistId)
-    const $tasks = domain.createStore<TaskModelType[]>([])
-
-    const fetchTasksFx = domain.createEffect(
-        async () => await tasksApi.getTasks(todolistId),
-    )
-
-    const createTaskFx = domain.createEffect(
-        async (title: string) => await tasksApi.createTask(todolistId, title),
-    )
-
-    const deleteTaskFx = domain.createEffect(
-        async ({taskId}: {taskId: string}) =>
-            await tasksApi.removeTask(taskId, todolistId),
-    )
-
     const statusUpdated = domain.createEvent('statusUpdated')
 
-    const createTaskModelWithSubs = (taskData: any) => {
+    const tasksModel = createCollectionModel(
+        todolistId,
+        tasksApi,
+        createTaskModelWithSubs,
+    )
+
+    function createTaskModelWithSubs(taskData: TaskType): TaskModelType {
         const taskModel = createTaskModel(taskData)
 
-        $tasks.on(taskModel.deleteFx.done, (state, _) =>
-            state.filter((t) => t.id !== taskModel.id),
+        tasksModel.$items.on(taskModel.deleteFx.doneData, (items) =>
+            items.filter((task) => task.id !== taskModel.id),
         )
 
         forward({
@@ -38,23 +30,8 @@ export const createTasksModel = (todolistId: string) => {
         return taskModel
     }
 
-    $tasks
-        .on(fetchTasksFx.doneData, (tasks, {items}) =>
-            items.map(createTaskModelWithSubs),
-        )
-        .on(createTaskFx.doneData, (tasks, {item}) => [
-            createTaskModelWithSubs(item),
-            ...tasks,
-        ])
-        .on(deleteTaskFx.done, (tasks, {params}) =>
-            tasks.filter((t) => t.id !== params.taskId),
-        )
-
     return {
-        $tasks,
-        fetchTasksFx,
-        createTaskFx,
-        deleteTaskFx,
+        ...tasksModel,
         statusUpdated,
     }
 }

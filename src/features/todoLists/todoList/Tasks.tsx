@@ -4,10 +4,12 @@ import {useEvent, useStore} from 'effector-react'
 import {Task} from './task/Task'
 import {Loading} from 'common/components/Loading'
 
-export const Tasks: FC<{model: TasksModelType}> = ({model}) => {
-    const tasks = useStore(model.$tasks)
-    const fetchTasks = useEvent(model.fetchTasksFx)
-    const isFetching = useStore(model.fetchTasksFx.pending)
+export const Tasks: FC<{
+    model: TasksModelType
+}> = ({model}) => {
+    const tasks = useStore(model.$items)
+    const fetchTasks = useEvent(model.fetchItemsFx)
+    const isFetching = useStore(model.fetchItemsFx.pending)
 
     useEffect(() => {
         fetchTasks()

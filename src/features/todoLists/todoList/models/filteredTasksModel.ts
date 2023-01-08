@@ -14,12 +14,15 @@ export const createFilteredTasksModel = (
     sample({
         clock: [
             filterModel.setFilter,
-            tasksModel.$tasks,
+            tasksModel.$items,
             tasksModel.statusUpdated,
         ],
-        source: tasksModel.$tasks,
+        source: tasksModel.$items,
         target: $filteredTasks,
         fn: (source) => filterModel.apply(source),
     })
-    return {...tasksModel, $tasks: $filteredTasks}
+    return {
+        ...tasksModel,
+        $items: $filteredTasks,
+    }
 }
